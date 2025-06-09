@@ -1,0 +1,50 @@
+[
+  {
+    "id": "356a192b7913b04c54574d18c28d46e6395428ab",
+    "name": "Judite Heeler",
+    "school_disciplines": "Artes, Português",
+    "contact": "j.heeler@gmail",
+    "phone_number": "48 9696 5858",
+    "status": "on"
+  },
+  {
+    "id": "a3f6c9d4e7b8a1c2f3e4d5c6b7a8d9e0f1a2b3c4",
+    "name": "Luciana Castro",
+    "school_disciplines": "Inglês, Literatura",
+    "contact": "luciana.castro@gmail.com",
+    "phone_number": "19 98765 1234",
+    "status": "off"
+  },
+  {
+    "id": "e4da3b7fbbce2345d7772b0674a318d5f1f2d5c7",
+    "name": "Rafael Mendes",
+    "school_disciplines": "Filosofia, Ética",
+    "contact": "rafael.mendes@outlook.com",
+    "phone_number": "27 91234 5678",
+    "status": "on"
+  },
+  {
+    "id": "c30ca5ec-8b53-4d97-a6c8-a8886c6e093c",
+    "name": "35tertgert",
+    "school_disciplines": "stringerfgerfgerg",
+    "contact": "gregrerg",
+    "phone_number": "4234234234234234",
+    "status": "on"
+  },
+  {
+    "id": "4828e729-c90d-4cff-8924-a07174b9d394",
+    "name": "ergergregre",
+    "school_disciplines": "gergregerger",
+    "contact": "hrrthrdfwjkwef",
+    "phone_number": "48 9 9999-9999",
+    "status": "on"
+  },
+  {
+    "id": "28c457f8-a0d5-4956-89a8-b2207edc0209",
+    "name": "Andre",
+    "school_disciplines": "Js, React",
+    "contact": "andre@gmail.com",
+    "phone_number": "48 9 9999-9999",
+    "status": "on"
+  }
+]
