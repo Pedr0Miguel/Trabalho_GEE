@@ -1,9 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const fs = require('fs').promises;
-const path = require('path');
+import express from 'express';
+import Event from '../models/Event.js';
 
-const EVENTS_FILE = path.join(__dirname, '../db/events.json');
+const router = express.Router();
 
 /**
  * @swagger
@@ -25,8 +23,12 @@ const EVENTS_FILE = path.join(__dirname, '../db/events.json');
  *         description: Erro interno
  */
 router.get('/', async (req, res) => {
-  const events = await fs.readFile(EVENTS_FILE, 'utf-8');
-  res.json(JSON.parse(events));
+  try {
+    const events = await Event.find();
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao buscar eventos' });
+  }
 });
 
 /**
@@ -48,9 +50,13 @@ router.get('/', async (req, res) => {
  *         description: Evento não encontrado
  */
 router.get('/:id', async (req, res) => {
-  const events = JSON.parse(await fs.readFile(EVENTS_FILE, 'utf-8'));
-  const event = events.find(e => e.id === req.params.id);
-  res.json(event || { error: 'Evento não encontrado' });
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) return res.status(404).json({ error: 'Evento não encontrado' });
+    res.json(event);
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao buscar evento' });
+  }
 });
 
 /**
@@ -79,11 +85,13 @@ router.get('/:id', async (req, res) => {
  *         description: Dados inválidos
  */
 router.post('/', async (req, res) => {
-  const events = JSON.parse(await fs.readFile(EVENTS_FILE, 'utf-8'));
-  const newEvent = { id: Date.now().toString(), ...req.body };
-  events.push(newEvent);
-  await fs.writeFile(EVENTS_FILE, JSON.stringify(events, null, 2));
-  res.status(201).json(newEvent);
+  try {
+    const newEvent = new Event(req.body);
+    await newEvent.save();
+    res.status(201).json(newEvent);
+  } catch (err) {
+    res.status(400).json({ error: 'Dados inválidos' });
+  }
 });
 
 /**
@@ -118,12 +126,13 @@ router.post('/', async (req, res) => {
  *         description: Evento não encontrado
  */
 router.put('/:id', async (req, res) => {
-  const events = JSON.parse(await fs.readFile(EVENTS_FILE, 'utf-8'));
-  const index = events.findIndex(e => e.id === req.params.id);
-  if (index === -1) return res.status(404).json({ error: 'Evento não encontrado' });
-  events[index] = { ...events[index], ...req.body };
-  await fs.writeFile(EVENTS_FILE, JSON.stringify(events, null, 2));
-  res.json(events[index]);
+  try {
+    const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedEvent) return res.status(404).json({ error: 'Evento não encontrado' });
+    res.json(updatedEvent);
+  } catch (err) {
+    res.status(400).json({ error: 'Erro ao atualizar evento' });
+  }
 });
 
 /**
@@ -145,10 +154,13 @@ router.put('/:id', async (req, res) => {
  *         description: Evento não encontrado
  */
 router.delete('/:id', async (req, res) => {
-  const events = JSON.parse(await fs.readFile(EVENTS_FILE, 'utf-8'));
-  const filteredEvents = events.filter(e => e.id !== req.params.id);
-  await fs.writeFile(EVENTS_FILE, JSON.stringify(filteredEvents, null, 2));
-  res.status(204).send();
+  try {
+    const deleted = await Event.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Evento não encontrado' });
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao remover evento' });
+  }
 });
 
-module.exports = router;
+export default router;

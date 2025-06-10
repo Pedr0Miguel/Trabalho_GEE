@@ -1,22 +1,27 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUI = require('swagger-ui-express');
-const rotaProfessores = require('./routes/rotaProfessores');
-const userRoutes = require('./routes/userRoutes');
-const studentsRoutes = require('./routes/studentsRoutes');
-const eventsRoutes = require('./routes/eventsRoutes');
-const rotaProfissionais = require('./routes/rotaProfissionais');
+import dotenv from 'dotenv';
+import path from 'path';
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUI from 'swagger-ui-express';
+import rotaProfessores from './routes/rotaProfessores.js';
+import userRoutes from './routes/userRoutes.js';
+import studentsRoutes from './routes/studentsRoutes.js';
+import eventsRoutes from './routes/eventsRoutes.js';
+import rotaProfissionais from './routes/rotaProfissionais.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '.env') });
+console.log('MONGO_URI:', process.env.MONGO_URI); // Adicione esta linha para depuração
 
 // Conexão com o MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Conectado ao MongoDB'))
-.catch(err => console.error('Erro ao conectar ao MongoDB:', err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Conectado ao MongoDB'))
+  .catch(err => console.error('Erro ao conectar ao MongoDB:', err));
 
 const app = express();
 
@@ -48,7 +53,7 @@ const swaggerSpec = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 // Iniciar servidor
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

@@ -1,12 +1,13 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const studentSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
   name: { type: String, required: true },
-  age: Number,
-  special_needs: String,
-  parents: String,
-  phone_number: String,
+  age: { type: String, required: true },
+  parents: { type: String, required: true },
+  phone_number: { type: String, required: true },
+  special_needs: { type: String, required: true },
   status: { type: String, default: 'on' }
 });
 
-module.exports = mongoose.model('Student', studentSchema);
+export default mongoose.model('Student', studentSchema);

@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import Student from '../models/Student.js';
+
 const router = express.Router();
-const Student = require('../models/Student');
 
 /**
  * @swagger
@@ -132,21 +133,14 @@ router.get('/:id', async (req, res) => {
  *       404:
  *         description: Aluno não encontrado
  */
-router.put('/:id', (req, res) => {
-  const students = readStudents();
-  const index = students.findIndex(s => s.id === req.params.id);
-
-  if (index === -1) return res.status(404).json({ error: 'Aluno não encontrado' });
-
-  const updatedStudent = {
-    ...students[index],
-    ...req.body,
-    id: students[index].id 
-  };
-
-  students[index] = updatedStudent;
-  writeStudents(students);
-  res.json(updatedStudent);
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ error: 'Aluno não encontrado' });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: 'Erro ao atualizar aluno' });
+  }
 });
 
 /**
@@ -167,15 +161,14 @@ router.put('/:id', (req, res) => {
  *       404:
  *         description: Aluno não encontrado
  */
-router.delete('/:id', (req, res) => {
-  const students = readStudents();
-  const index = students.findIndex(s => s.id === req.params.id);
-
-  if (index === -1) return res.status(404).json({ error: 'Aluno não encontrado' });
-
-  students[index].status = 'off';
-  writeStudents(students);
-  res.json({ message: 'Aluno desativado com sucesso' });
+router.delete('/:id', async (req, res) => {
+  try {
+    const updated = await Student.findByIdAndUpdate(req.params.id, { status: 'off' }, { new: true });
+    if (!updated) return res.status(404).json({ error: 'Aluno não encontrado' });
+    res.json({ message: 'Aluno desativado com sucesso' });
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao desativar aluno' });
+  }
 });
 
-module.exports = router;
+export default router;

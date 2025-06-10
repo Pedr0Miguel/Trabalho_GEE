@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const professionalSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   specialty: { type: String, required: true },
   contact: { type: String, required: true },
@@ -8,4 +9,4 @@ const professionalSchema = new mongoose.Schema({
   status: { type: String, default: 'on' }
 });
 
-module.exports = mongoose.model('Professional', professionalSchema);
+export default mongoose.model('Professional', professionalSchema);

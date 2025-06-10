@@ -1,9 +1,7 @@
-const crypto = require('crypto');
-const express = require('express');
+import express from 'express';
+import Professor from '../models/Professor.js';
+
 const router = express.Router();
-const fs = require('fs').promises;
-const path = require('path');
-const axios = require('axios');
 
 /**
  * @swagger
@@ -26,19 +24,10 @@ const axios = require('axios');
  */
 router.get('/', async (req, res) => {
   try {
-    const data = await fs.readFile(path.join(__dirname, '../db/professores.json'), 'utf8');
-    const professores = JSON.parse(data);
-
-    // Usando array.map para formatar os dados
-    const formattedProfessores = professores.map(prof => ({
-      id: prof.id,
-      name: prof.name.toUpperCase(),
-      status: prof.status === 'on' ? 'Ativo' : 'Inativo',
-    }));
-
-    res.json(formattedProfessores);
+    const professores = await Professor.find();
+    res.json(professores);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao ler dados' });
+    res.status(500).json({ error: 'Erro ao buscar professores' });
   }
 });
 
@@ -109,31 +98,12 @@ router.get('/:idOrName', async (req, res) => {
  *         description: Dados inválidos
  */
 router.post('/', async (req, res) => {
-  const { name, school_disciplines, contact, phone_number } = req.body;
-
-  // Validação básica (campos obrigatórios)
-  if (!name || !school_disciplines || !contact || !phone_number) {
-    return res.status(400).json({ error: "Campos obrigatórios faltando" });
-  }
-
-  // Validação avançada (exemplo para telefone)
-  const phoneRegex = /^[\d\s()-]+$/; // Aceita números, espaços, parênteses e traços
-  if (!phoneRegex.test(phone_number)) {
-    return res.status(400).json({ error: "Telefone inválido" });
-  }
-
   try {
-    const professores = JSON.parse(await fs.readFile(path.join(__dirname, '../db/professores.json'), 'utf8'));
-    const newTeacher = { 
-      id: crypto.randomUUID(), 
-      ...req.body, 
-      status: "on" 
-    };
-    professores.push(newTeacher);
-    await fs.writeFile(path.join(__dirname, '../db/professores.json'), JSON.stringify(professores, null, 2));
-    res.status(201).json(newTeacher);
+    const novo = new Professor(req.body);
+    await novo.save();
+    res.status(201).json(novo);
   } catch (error) {
-    res.status(500).json({ error: 'Erro interno do servidor' });
+    res.status(400).json({ error: 'Dados inválidos' });
   }
 });
 
@@ -168,14 +138,11 @@ router.post('/', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
   try {
-    const professores = JSON.parse(await fs.readFile(path.join(__dirname, '../db/professores.json'), 'utf8'));
-    const index = professores.findIndex(p => p.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: "Professor não encontrado" });
-    professores[index] = { ...professores[index], ...req.body };
-    await fs.writeFile(path.join(__dirname, '../db/professores.json'), JSON.stringify(professores, null, 2));
-    res.json(professores[index]);
+    const atualizado = await Professor.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!atualizado) return res.status(404).json({ error: 'Professor não encontrado' });
+    res.json(atualizado);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao atualizar" });
+    res.status(400).json({ error: 'Erro ao atualizar' });
   }
 });
 
@@ -199,14 +166,12 @@ router.put('/:id', async (req, res) => {
  */
 router.delete('/:id', async (req, res) => {
   try {
-    const professores = JSON.parse(await fs.readFile(path.join(__dirname, '../db/professores.json'), 'utf8'));
-    const filtered = professores.filter(p => p.id !== req.params.id);
-    if (professores.length === filtered.length) return res.status(404).json({ error: "Professor não encontrado" });
-    await fs.writeFile(path.join(__dirname, '../db/professores.json'), JSON.stringify(filtered, null, 2));
-    res.json({ message: "Professor removido" });
+    const removido = await Professor.findByIdAndDelete(req.params.id);
+    if (!removido) return res.status(404).json({ error: 'Professor não encontrado' });
+    res.json({ message: 'Professor removido' });
   } catch (error) {
-    res.status(500).json({ error: "Erro ao excluir" });
+    res.status(500).json({ error: 'Erro ao excluir' });
   }
 });
 
-module.exports = router;
+export default router;
