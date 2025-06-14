@@ -8,7 +8,7 @@ const router = express.Router();
  * tags:
  *   name: Eventos - Gabriel Cardoso Coelho
  *   description: Gerenciamento de eventos
- */
+ */ 
 
 /**
  * @swagger
