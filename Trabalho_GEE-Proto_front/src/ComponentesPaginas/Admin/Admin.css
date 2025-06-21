@@ -1,0 +1,139 @@
+/* Garante que nada vaze para fora da viewport */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  position: relative;
+  font-family: sans-serif;
+}
+
+/* Container principal */
+.admin-container {
+  padding: 6rem 2rem 2rem 2rem; /* top, right, bottom, left */
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* Título */
+.admin-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #000000;
+}
+
+/* Grid responsiva */
+.admin-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(1, 1fr);
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* 2 colunas em telas médias */
+@media (min-width: 600px) {
+  .admin-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 3 colunas em telas grandes */
+@media (min-width: 900px) {
+  .admin-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Wrapper dos cards: necessário para evitar quebra ao fazer zoom */
+.admin-card-wrapper {
+  position: relative;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px; /* Espaço vertical para o card expandido */
+  z-index: 1;
+}
+
+/* Card visual */
+.admin-card {
+  background-color: #ffffffcc;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+  backdrop-filter: none;
+  position: relative;
+  z-index: 2;
+  transform-origin: center;
+
+  height: 250px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.admin-card h3 {
+  font-size: 1.1rem;
+  color: #222;
+}
+
+/* Hover: aumenta e sobe z-index */
+.admin-card:hover {
+  transform: scale(1.6);
+  z-index: 999;
+}
+
+/* Desfoca os outros cards */
+.admin-grid:hover .admin-card:not(:hover) {
+  filter: blur(4px);
+  transform: scale(1);
+  z-index: 1;
+}
+
+/* Estilos para telas pequenas */
+@media (max-width: 600px) {
+  .admin-container {
+    padding: 3rem 0.5rem 1rem 0.5rem;
+  }
+
+  .admin-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .admin-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 20px;
+  }
+
+  .admin-card {
+    padding: 1rem;
+    max-width: 100%;
+    height: 180px;
+  }
+
+  .admin-card:first-child {
+    margin-top: 20px;
+  }
+
+  .admin-card h3 {
+    font-size: 1rem;
+  }
+}
+
+/* Limite o tamanho só em telas grandes */
+@media (min-width: 900px) {
+  .admin-card {
+    max-width: 220px;
+  }
+}

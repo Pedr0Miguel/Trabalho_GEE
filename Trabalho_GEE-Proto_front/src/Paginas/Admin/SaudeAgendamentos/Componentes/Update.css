@@ -1,0 +1,266 @@
+.update-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(45, 108, 223, 0.07);
+}
+
+.update-container h2 {
+  color: #2d6cdf;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.update-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.selection-section,
+.form-section {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.selection-section h3,
+.form-section h3 {
+  color: #374151;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.agendamentos-list {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.agendamento-item {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.agendamento-item:hover {
+  border-color: #6b73ff;
+  box-shadow: 0 2px 8px rgba(107, 115, 255, 0.1);
+}
+
+.agendamento-item.selected {
+  border-color: #2d6cdf;
+  background: linear-gradient(135deg, #2d6cdf 0%, #6b73ff 100%);
+  color: #fff;
+}
+
+.agendamento-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.agendamento-info strong {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.agendamento-info span {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.no-agendamentos {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 2rem;
+}
+
+.update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-group.full-width {
+  flex: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #6b73ff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(107, 115, 255, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.btn-update {
+  padding: 14px 28px;
+  background: linear-gradient(90deg, #2d6cdf 60%, #6b73ff 100%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+  align-self: center;
+  min-width: 150px;
+}
+
+.btn-update:hover {
+  background: linear-gradient(90deg, #1a4fa0 60%, #4e56d6 100%);
+  box-shadow: 0 4px 12px rgba(45, 108, 223, 0.2);
+}
+
+/* Messages */
+.mensagem {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.mensagem.sucesso {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.mensagem.erro {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Loading state */
+.loading-text {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin: 2rem 0;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .update-container {
+    padding: 1.5rem;
+    margin: 0 1rem;
+  }
+
+  .update-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .update-container {
+    padding: 1rem;
+    margin: 0;
+  }
+
+  .update-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .selection-section,
+  .form-section {
+    padding: 1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-group {
+    min-width: unset;
+  }
+
+  .btn-update {
+    width: 100%;
+  }
+
+  .agendamentos-list {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .update-container {
+    padding: 0.5rem;
+  }
+
+  .selection-section,
+  .form-section {
+    padding: 0.75rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .agendamento-item {
+    padding: 0.75rem;
+  }
+
+  .agendamento-info strong {
+    font-size: 0.9rem;
+  }
+
+  .agendamento-info span {
+    font-size: 0.8rem;
+  }
+} 
